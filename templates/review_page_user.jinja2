@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link id="icon-image" rel="icon" href="{{ url_for('static', filename='LOGO.png') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Review - {{info[1]}}</title>
+</head>
+<body>
+    <div class="container">
+        <div class="image">
+        <h1 class="title">{{info[1]}}</h1>
+            <img id="game" src="{{info[2]}}">
+        </div>
+        <div class="general">
+        {% if data[0]|length == 0 %}
+            <div class="no_rev">
+                <p>Sorry, there are no reviews for this game :c</p>
+            </div>
+        {% endif %}
+        {% set count = namespace(value=0) %}
+        {% for i in data %}
+            <div class="single_user{{ count.value % 2 }}">
+                <div class="schedule_user">    
+                    <div class="user_name_date">
+                        <p>{{i.get('name')}}</p>
+                        <div class="date"> 
+                            <span class="date_value">{{i.get('date')}}</span> 
+                        </div>
+                    </div>
+                    <div class="pic-name">
+                        <img id="profile-pic" src="{{i.get('pfp')}}">
+                    </div>
+                    <div class="user_info">
+                        <div class="text">
+                            <span>{{i.get('text')}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% set count.value = count.value + 1 %}
+            {% endfor %}
+        </div>
+        {% if info[0] %}
+        <div class="write_comment">
+            <form id= "my_form"  method="POST">
+                <textarea class="comment_text" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' name="text_field" minlength="1" maxlength="500" placeholder="Write a comment!"></textarea>
+                <button class="send">Send</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
